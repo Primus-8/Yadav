@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image QR Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-xl rounded-xl p-6 w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold mb-4">Image QR Generator</h1>
+    <input id="imageUrl" type="url" placeholder="Paste image link here..." class="w-full p-2 border rounded mb-4" />
+    <button onclick="generateQRCode()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate QR</button>
+    <div id="qrcode" class="mt-6 flex justify-center"></div>
+    <a id="downloadBtn" class="hidden mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" download="qr-code.png">Download QR Code</a>
+  </div>
+  <script src="qrcode.min.js"></script>
+  <script>
+    function generateQRCode() {
+      const url = document.getElementById('imageUrl').value;
+      const qrContainer = document.getElementById('qrcode');
+      const downloadBtn = document.getElementById('downloadBtn');
+      qrContainer.innerHTML = '';
+      if (!url) return;
+
+      const qr = new QRCode(qrContainer, {
+        text: url,
+        width: 256,
+        height: 256
+      });
+
+      setTimeout(() => {
+        const img = qrContainer.querySelector('img');
+        if (img) {
+          downloadBtn.href = img.src;
+          downloadBtn.classList.remove('hidden');
+        }
+      }, 500);
+    }
+  </script>
+</body>
+</html>
